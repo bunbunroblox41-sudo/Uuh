@@ -44,7 +44,7 @@ local Window = Fluent:CreateWindow({
 -- 📑 Các tab (mục chính)
 local Tabs = {
 	Main0 = Window:AddTab({ Title = "Kênh" }),  -- 👈 đổi tên tab 1
-	Main1 = Window:AddTab({ Title = "trồng một khu vườn" }),  -- 👈 đổi tên tab 2
+	Main1 = Window:AddTab({ Title = "biến hình" }),  -- 👈 đổi tên tab 2
 	Main2 = Window:AddTab({ Title = "Cướp một brainot " }),     -- 👈 đổi tên tab 3
 	Main3 = Window:AddTab({ Title = "99 Night" }),        -- 👈 đổi tên tab 4
 	Main4 = Window:AddTab({ Title = "bờ lốc fờ rút" }),    -- 👈 đổi tên tab 5
@@ -80,8 +80,7 @@ Tabs.Main0:AddButton({
 
 ------------------------------------------------
 -- TAB 2: Ví dụ thêm script
-------------------------------------------------
-Tabs.Main1:AddButton({
+---------------------------------------------({
 	Title = "Speed Hub",                             -- 👈 tên nút hiển thị
 	Description = "script này ngon á đủ chức năng cả😃",-- 👈 mô tả
 	Callback = function()
@@ -90,5 +89,31 @@ Tabs.Main1:AddButton({
 			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
 		}
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))() -- 👈 link script tải
+	end
+})
+Tabs.Main1:AddButton({
+	Title = "Ban hammer",                             -- 👈 tên nút hiển thị
+	Description = "Ban !",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+-- Remote script URL (inspect before running)
+-- To run manually after review, paste this into the editor and press Execute:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nicolasbarbosa323/ban-hammer/refs/heads/main/ban"))()
+	end
+})
+Tabs.Main1:AddButton({
+	Title = "Ban hammer",                             -- 👈 tên nút hiển thị
+	Description = "Ban !",-- 👈 mô tả
+	Callback = function()
+		local Settings = {
+			JoinTeam = "Pirates";   -- 👈 team mặc định: Pirates hoặc Marines
+			Translator = true;      -- 👈 bật dịch sang tiếng Việt nếu có
+		}
+-- Remote script URL (inspect before running)
+-- To run manually after review, paste this into the editor and press Execute:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nicolasbarbosa323/ban-hammer/refs/heads/main/ban"))()
 	end
 })
