@@ -1,0 +1,75 @@
+-- Bun Dịch Chuyển 🤓 (Xanh + Trắng)
+
+local plr = game.Players.LocalPlayer
+
+local function getRoot()
+    local char = plr.Character or plr.CharacterAdded:Wait()
+    return char:WaitForChild("HumanoidRootPart")
+end
+
+local savedPos = nil
+
+-- GUI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "BunTPv3"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0,220,0,130)
+frame.Position = UDim2.new(0.4,0,0.4,0)
+frame.BackgroundColor3 = Color3.fromRGB(240,240,255) -- trắng xanh
+frame.Active = true
+frame.Draggable = true
+
+local corner = Instance.new("UICorner", frame)
+corner.CornerRadius = UDim.new(0,12)
+
+-- Title
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1,0,0,30)
+title.Text = "Bun Dịch Chuyển 🤓"
+title.BackgroundColor3 = Color3.fromRGB(0,120,255) -- xanh
+title.TextColor3 = Color3.new(1,1,1)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 14
+
+local titleCorner = Instance.new("UICorner", title)
+titleCorner.CornerRadius = UDim.new(0,12)
+
+-- Button function
+local function makeButton(text, yPos)
+    local btn = Instance.new("TextButton", frame)
+    btn.Size = UDim2.new(1,-20,0,35)
+    btn.Position = UDim2.new(0,10,0,yPos)
+    btn.Text = text
+    btn.BackgroundColor3 = Color3.fromRGB(255,255,255) -- trắng
+    btn.TextColor3 = Color3.fromRGB(0,120,255) -- xanh chữ
+    btn.Font = Enum.Font.Gotham
+    btn.TextSize = 14
+    
+    local c = Instance.new("UICorner", btn)
+    c.CornerRadius = UDim.new(0,8)
+
+    -- Hover
+    btn.MouseEnter:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(220,235,255)
+    end)
+    btn.MouseLeave:Connect(function()
+        btn.BackgroundColor3 = Color3.fromRGB(255,255,255)
+    end)
+
+    return btn
+end
+
+local saveBtn = makeButton("📍 Lưu vị trí", 40)
+local tpBtn = makeButton("🚀 Dịch chuyển", 85)
+
+-- Functions
+saveBtn.MouseButton1Click:Connect(function()
+    savedPos = getRoot().CFrame
+end)
+
+tpBtn.MouseButton1Click:Connect(function()
+    if savedPos then
+        getRoot().CFrame = savedPos
+    end
+end)
