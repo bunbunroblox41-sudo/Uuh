@@ -1,0 +1,93 @@
+-- Bun Executor GUI 💚
+
+local plr = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", plr:WaitForChild("PlayerGui"))
+gui.Name = "BunExecutor"
+
+-- ICON BUTTON (hình tròn chữ B)
+local icon = Instance.new("TextButton")
+icon.Parent = gui
+icon.Size = UDim2.new(0, 60, 0, 60)
+icon.Position = UDim2.new(0, 20, 0.4, 0)
+icon.Text = "B"
+icon.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+icon.TextColor3 = Color3.fromRGB(0, 255, 150)
+icon.Font = Enum.Font.GothamBlack
+icon.TextScaled = true
+icon.BorderSizePixel = 0
+
+-- bo tròn
+local corner = Instance.new("UICorner", icon)
+corner.CornerRadius = UDim.new(1, 0)
+
+-- MAIN FRAME
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, 400, 0, 250)
+frame.Position = UDim2.new(0.5, -200, 0.5, -125)
+frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+frame.Visible = false
+frame.BorderSizePixel = 0
+
+local frameCorner = Instance.new("UICorner", frame)
+frameCorner.CornerRadius = UDim.new(0, 10)
+
+-- TEXTBOX
+local box = Instance.new("TextBox", frame)
+box.Size = UDim2.new(0.9, 0, 0.5, 0)
+box.Position = UDim2.new(0.05, 0, 0.1, 0)
+box.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+box.TextColor3 = Color3.fromRGB(0, 0, 0)
+box.PlaceholderText = "Nhập script vào đây..."
+box.Text = ""
+box.Font = Enum.Font.Code
+box.TextWrapped = true
+box.TextScaled = true
+box.ClearTextOnFocus = false
+
+local boxCorner = Instance.new("UICorner", box)
+boxCorner.CornerRadius = UDim.new(0, 8)
+
+-- EXECUTE BUTTON
+local exec = Instance.new("TextButton", frame)
+exec.Size = UDim2.new(0.4, 0, 0.2, 0)
+exec.Position = UDim2.new(0.05, 0, 0.7, 0)
+exec.Text = "EXECUTE"
+exec.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+exec.TextColor3 = Color3.fromRGB(0, 0, 0)
+exec.Font = Enum.Font.GothamBold
+exec.TextScaled = true
+
+local execCorner = Instance.new("UICorner", exec)
+execCorner.CornerRadius = UDim.new(0, 8)
+
+-- COPY BUTTON
+local copy = Instance.new("TextButton", frame)
+copy.Size = UDim2.new(0.4, 0, 0.2, 0)
+copy.Position = UDim2.new(0.55, 0, 0.7, 0)
+copy.Text = "COPY"
+copy.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+copy.TextColor3 = Color3.fromRGB(0, 0, 0)
+copy.Font = Enum.Font.GothamBold
+copy.TextScaled = true
+
+local copyCorner = Instance.new("UICorner", copy)
+copyCorner.CornerRadius = UDim.new(0, 8)
+
+-- MỞ / ĐÓNG MENU
+icon.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
+end)
+
+-- EXECUTE FUNCTION
+exec.MouseButton1Click:Connect(function()
+    pcall(function()
+        loadstring(box.Text)()
+    end)
+end)
+
+-- COPY FUNCTION
+copy.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(box.Text)
+    end
+end)
