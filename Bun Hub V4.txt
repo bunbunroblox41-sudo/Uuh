@@ -1,0 +1,136 @@
+-- Load Rayfield
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+-- Create Window
+local Window = Rayfield:CreateWindow({
+    Name = "BUN HUB V4 ( Premium )",
+    LoadingTitle = "BUN HUB Loading...",
+    LoadingSubtitle = "by Bun",
+    ConfigurationSaving = {
+        Enabled = false
+    }
+})
+
+-- ================= TAB 1 =================
+local Tab1 = Window:CreateTab("Tổng hợp 19 script 🤑", 4483362458)
+
+Tab1:CreateButton({Name="💪 Fly", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
+end})
+
+Tab1:CreateButton({Name="🧠 Infinite Yield", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end})
+
+Tab1:CreateButton({Name="😂 Fling", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/long191910/all-my-roblox-script/refs/heads/main/touchfling.lua"))()
+end})
+
+Tab1:CreateButton({Name="💀 Fake Dead", Callback=function()
+loadstring(game:HttpGet("https://pastefy.app/ssXUg0ng/raw", true))()
+end})
+
+Tab1:CreateButton({Name="🕷 Lọ Vương", Callback=function()
+loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))("Spider Script")
+end})
+
+Tab1:CreateButton({Name="🎯 Hitbox", Callback=function()
+loadstring(game:HttpGet("https://pastefy.app/ItfO0tdg/raw"))()
+end})
+
+Tab1:CreateButton({Name="🔥 ESP", Callback=function()
+loadstring(game:HttpGet("https://obj.wearedevs.net/140060/scripts/Universal%20ESP.lua"))()
+end})
+
+Tab1:CreateButton({Name="⚡ Fix Lag", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/TuboLite/script/main/FixLag.lua"))()
+end})
+
+Tab1:CreateButton({Name="🤯 Noclip", Callback=function()
+loadstring(game:HttpGet("https://obj.wearedevs.net/197981/scripts/roblox%20noclip%20GUI.lua"))()
+end})
+
+Tab1:CreateButton({Name="💃 Emote", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/7yd7/Hub/refs/heads/Branch/GUIS/Emotes.lua"))()
+end})
+
+Tab1:CreateButton({Name="📜 Execute Bun", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bunbunroblox41-sudo/Uuh/refs/heads/main/Bun%20Execute%20.txt", true))()
+end})
+
+Tab1:CreateButton({Name="📍 Dịch chuyển", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bunbunroblox41-sudo/Uuh/refs/heads/main/Script%20d%E1%BB%8Bch%20chuy%E1%BB%83n%20.txt", true))()
+end})
+
+Tab1:CreateButton({Name="👻 Invisible", Callback=function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Awesome-Invisible-man-21074"))()
+end})
+
+Tab1:CreateButton({Name="👑 God Mode", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/mascaracathub/Test-Script/refs/heads/main/godmodev1.lua.txt"))()
+end})
+
+Tab1:CreateButton({Name="🎮 Shift Lock", Callback=function()
+loadstring(game:HttpGet("https://scriptblox.com/raw/Universal-Script-Permanent-Shiftlock-7513"))()
+end})
+
+Tab1:CreateButton({Name="☁ Float", Callback=function()
+loadstring(game:HttpGet("https://obj.wearedevs.net/2/scripts/Float%20Character.lua"))()
+end})
+
+Tab1:CreateButton({Name="🧱 F3X", Callback=function()
+loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
+end})
+
+Tab1:CreateButton({Name="🐌 Fake Lag", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/catwljz/mm/refs/heads/main/fakelag.txt"))()
+end})
+
+Tab1:CreateButton({Name="📷 Free Cam", Callback=function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FREECAM-script-80365"))()
+end})
+
+-- ================= TAB 2 =================
+local Tab2 = Window:CreateTab("VIP", 4483362458)
+
+Tab2:CreateButton({Name="👻 Ghost Hub", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/blabla6767yoo-cmyk/Scripts/refs/heads/main/Ghost%20Hub%20Key%20Bypass"))()
+end})
+
+Tab2:CreateButton({Name="🧬 Biến Hình", Callback=function()
+loadstring(game:HttpGet("https://pastefy.app/2OWyTovg/raw"))()
+end})
+
+Tab2:CreateButton({Name="💥 System Broken", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/H20CalibreYT/SystemBroken/main/script"))()
+end})
+
+-- ================= TAB 3 =================
+local Tab3 = Window:CreateTab("Map Script", 4483362458)
+
+Tab3:CreateButton({Name="🌌 Voidware", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/VapeVoidware/VW-Add/main/loader.lua", true))()
+end})
+
+Tab3:CreateButton({Name="😂 Fling People", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/example-prog/FLING-THINGS-AND-PEOPLE/refs/heads/main/Flingthingsandpeoplescript"))()
+end})
+
+Tab3:CreateButton({Name="⚔ Whakizashi", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/sccv8/WhakizashiX/refs/heads/main/old%20whakizashi.txt"))()
+end})
+
+Tab3:CreateButton({Name="🏡 Brookhaven", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/kigredns/testUIDK/refs/heads/main/panel.lua"))()
+end})
+
+Tab3:CreateButton({Name="🥊 TSB", Callback=function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MinhNhatHUB/MinhNhat-HUB-TSB-V7/refs/heads/main/TSB.txt"))()
+end})
+
+-- ================= TAB 4 =================
+local Tab4 = Window:CreateTab("Trolling", 4483362458)
+
+Tab4:CreateButton({Name="😈 Trolling GUI", Callback=function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-ultimate-trolling-gui-REBORN-43794"))()
+end})
