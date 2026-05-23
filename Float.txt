@@ -1,0 +1,60 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "FloatHub"
+ScreenGui.Parent = game.CoreGui
+
+-- Main Frame
+local Main = Instance.new("Frame")
+Main.Parent = ScreenGui
+Main.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Main.Size = UDim2.new(0,220,0,120)
+Main.Position = UDim2.new(0.4,0,0.4,0)
+Main.Active = true
+Main.Draggable = true
+Main.BorderSizePixel = 0
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.BackgroundTransparency = 1
+Title.Size = UDim2.new(1,0,0,35)
+Title.Text = "FLOAT"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.TextScaled = true
+Title.Font = Enum.Font.GothamBold
+
+-- Float Button
+local FloatButton = Instance.new("TextButton")
+FloatButton.Parent = Main
+FloatButton.Size = UDim2.new(0,60,0,60)
+FloatButton.Position = UDim2.new(0.35,0,0.45,0)
+FloatButton.BackgroundColor3 = Color3.fromRGB(255,255,255)
+FloatButton.Text = ""
+FloatButton.BorderSizePixel = 0
+
+local floating = false
+local bodyVelocity
+
+FloatButton.MouseButton1Click:Connect(function()
+	local character = LocalPlayer.Character
+	if not character then return end
+
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return end
+
+	floating = not floating
+
+	if floating then
+		bodyVelocity = Instance.new("BodyVelocity")
+		bodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+		bodyVelocity.Velocity = Vector3.new(0,0,0)
+		bodyVelocity.Parent = hrp
+	else
+		if bodyVelocity then
+			bodyVelocity:Destroy()
+		end
+	end
+end)
