@@ -1,0 +1,98 @@
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local TweenService = game:GetService("TweenService")
+
+-- 1. TẠO GIAO DIỆN CHÍNH (GUI)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "NhienRoblox_Final_WASD"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ResetOnSpawn = false
+
+----------------------------------------------------
+-- 2. CỤM PHÍM WASD CHUẨN VỊ TRÍ CAO ĐẸP
+----------------------------------------------------
+local DPadFrame = Instance.new("Frame")
+DPadFrame.Size = UDim2.new(0, 260, 0, 260) 
+DPadFrame.Position = UDim2.new(0.02, 0, 0.60, -130) -- Vị trí cao chuẩn y hệt ảnh bạn chụp
+DPadFrame.BackgroundTransparency = 1
+DPadFrame.Parent = ScreenGui
+
+-- Vòng tròn nền đen mờ
+local DPadBg = Instance.new("Frame")
+DPadBg.Size = UDim2.new(1, 0, 1, 0)
+DPadBg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+DPadBg.BackgroundTransparency = 0.65
+DPadBg.Parent = DPadFrame
+
+local UICornerBg = Instance.new("UICorner")
+UICornerBg.CornerRadius = UDim.new(1, 0)
+UICornerBg.Parent = DPadBg
+
+local function createKeyButton(name, text, pos, keyCode)
+    local btn = Instance.new("TextButton")
+    btn.Name = name
+    btn.Size = UDim2.new(0, 72, 0, 72) 
+    btn.Position = pos
+    btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    btn.BackgroundTransparency = 0.2
+    btn.Text = text
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.SourceSansBold
+    btn.TextSize = 30
+    btn.Parent = DPadFrame
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = btn
+
+    btn.MouseButton1Down:Connect(function()
+        VirtualInputManager:SendKeyEvent(true, keyCode, false, game)
+        TweenService:Create(btn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+    end)
+    btn.MouseButton1Up:Connect(function()
+        VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+        TweenService:Create(btn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
+    end)
+    btn.MouseLeave:Connect(function()
+        VirtualInputManager:SendKeyEvent(false, keyCode, false, game)
+        TweenService:Create(btn, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 45)}):Play()
+    end)
+end
+
+-- Sắp xếp các nút WASD khít đều quanh tâm
+createKeyButton("W_Btn", "W", UDim2.new(0.5, -36, 0, 15), Enum.KeyCode.W)
+createKeyButton("A_Btn", "A", UDim2.new(0, 15, 0.5, -36), Enum.KeyCode.A)
+createKeyButton("S_Btn", "S", UDim2.new(0.5, -36, 1, -87), Enum.KeyCode.S)
+createKeyButton("D_Btn", "D", UDim2.new(1, -87, 0.5, -36), Enum.KeyCode.D)
+
+----------------------------------------------------
+-- 3. NÚT SPACE (ĐÃ XÍT XUỐNG DƯỚI THEO Ý BẠN - OK 100%)
+----------------------------------------------------
+local JumpButton = Instance.new("TextButton")
+JumpButton.Name = "Jump_Btn"
+JumpButton.Size = UDim2.new(0, 130, 0, 130)
+-- Điều chỉnh thông số Y từ 0.60 xuống 0.76 để hạ nút SPACE xuống góc phải dưới vừa vặn form tay
+JumpButton.Position = UDim2.new(0.83, 0, 0.76, -65) 
+JumpButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+JumpButton.BackgroundTransparency = 0.5
+JumpButton.Text = "SPACE"
+JumpButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+JumpButton.Font = Enum.Font.SourceSansBold
+JumpButton.TextSize = 24
+JumpButton.Parent = ScreenGui
+
+local JumpCorner = Instance.new("UICorner")
+JumpCorner.CornerRadius = UDim.new(1, 0)
+JumpCorner.Parent = JumpButton
+
+JumpButton.MouseButton1Down:Connect(function()
+    VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+    TweenService:Create(JumpButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(150, 150, 150)}):Play()
+end)
+JumpButton.MouseButton1Up:Connect(function()
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+    TweenService:Create(JumpButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(0, 0, 0)}):Play()
+end)
+JumpButton.MouseLeave:Connect(function()
+    VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+    TweenService:Create(JumpButton, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(0, 0, 0)}):Play()
+end)
