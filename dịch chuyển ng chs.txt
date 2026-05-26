@@ -1,0 +1,133 @@
+--// Dịch Chuyển Đến Người Chơi
+--// By BUN
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Xóa GUI cũ nếu có
+pcall(function()
+	game.CoreGui:FindFirstChild("DichChuyenHub"):Destroy()
+end)
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DichChuyenHub"
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
+
+-- Nút mở/đóng
+local Toggle = Instance.new("TextButton")
+Toggle.Parent = ScreenGui
+Toggle.Size = UDim2.new(0,50,0,50)
+Toggle.Position = UDim2.new(0,20,0.4,0)
+Toggle.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Toggle.TextColor3 = Color3.fromRGB(255,255,255)
+Toggle.Text = "+"
+Toggle.TextScaled = true
+Toggle.Font = Enum.Font.GothamBold
+Toggle.Active = true
+Toggle.Draggable = true
+Toggle.BorderSizePixel = 0
+
+local UICorner1 = Instance.new("UICorner", Toggle)
+UICorner1.CornerRadius = UDim.new(0,12)
+
+-- Main Hub
+local Main = Instance.new("Frame")
+Main.Parent = ScreenGui
+Main.Size = UDim2.new(0,260,0,300)
+Main.Position = UDim2.new(0,80,0.3,0)
+Main.BackgroundColor3 = Color3.fromRGB(255,255,255)
+Main.Visible = false
+Main.Active = true
+Main.Draggable = true
+Main.BorderSizePixel = 0
+
+local UICorner2 = Instance.new("UICorner", Main)
+UICorner2.CornerRadius = UDim.new(0,15)
+
+-- Viền đen
+local Stroke = Instance.new("UIStroke", Main)
+Stroke.Color = Color3.fromRGB(0,0,0)
+Stroke.Thickness = 2
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = Main
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Title.Text = "Dịch Chuyển Đến Người Chơi"
+Title.TextColor3 = Color3.fromRGB(255,255,255)
+Title.Font = Enum.Font.GothamBold
+Title.TextScaled = true
+Title.BorderSizePixel = 0
+
+local UICorner3 = Instance.new("UICorner", Title)
+UICorner3.CornerRadius = UDim.new(0,15)
+
+-- Danh sách người chơi
+local Scrolling = Instance.new("ScrollingFrame")
+Scrolling.Parent = Main
+Scrolling.Size = UDim2.new(1,-10,1,-50)
+Scrolling.Position = UDim2.new(0,5,0,45)
+Scrolling.CanvasSize = UDim2.new(0,0,0,0)
+Scrolling.BackgroundTransparency = 1
+Scrolling.BorderSizePixel = 0
+Scrolling.ScrollBarThickness = 5
+
+local UIList = Instance.new("UIListLayout", Scrolling)
+UIList.Padding = UDim.new(0,5)
+
+-- Mở/đóng hub
+Toggle.MouseButton1Click:Connect(function()
+	Main.Visible = not Main.Visible
+	
+	if Main.Visible then
+		Toggle.Text = "-"
+	else
+		Toggle.Text = "+"
+	end
+end)
+
+-- Tạo nút player
+local function RefreshPlayers()
+	for _,v in pairs(Scrolling:GetChildren()) do
+		if v:IsA("TextButton") then
+			v:Destroy()
+		end
+	end
+	
+	for _,plr in pairs(Players:GetPlayers()) do
+		if plr ~= LocalPlayer then
+			
+			local Btn = Instance.new("TextButton")
+			Btn.Parent = Scrolling
+			Btn.Size = UDim2.new(1,-5,0,40)
+			Btn.BackgroundColor3 = Color3.fromRGB(0,0,0)
+			Btn.TextColor3 = Color3.fromRGB(255,255,255)
+			Btn.Text = plr.Name
+			Btn.Font = Enum.Font.GothamBold
+			Btn.TextScaled = true
+			Btn.BorderSizePixel = 0
+			
+			local UICorner = Instance.new("UICorner", Btn)
+			UICorner.CornerRadius = UDim.new(0,10)
+			
+			Btn.MouseButton1Click:Connect(function()
+				if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+					LocalPlayer.Character:MoveTo(
+						plr.Character.HumanoidRootPart.Position + Vector3.new(2,0,2)
+					)
+				end
+			end)
+		end
+	end
+	
+	wait()
+	Scrolling.CanvasSize = UDim2.new(0,0,0,UIList.AbsoluteContentSize.Y + 10)
+end
+
+RefreshPlayers()
+
+Players.PlayerAdded:Connect(RefreshPlayers)
+Players.PlayerRemoving:Connect(RefreshPlayers)
