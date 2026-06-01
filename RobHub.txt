@@ -1,0 +1,862 @@
+writefile("UpcomingScript4.png", game:HttpGet("https://raw.githubusercontent.com/ian49972/IMAGES/refs/heads/main/UpcomingScript4.png"))
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "RobHubV2"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local introFrame = Instance.new("Frame")
+introFrame.Size = UDim2.new(1, 0, 1, 0)
+introFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+introFrame.BorderSizePixel = 0
+introFrame.Parent = screenGui
+
+local introTitle = Instance.new("TextLabel")
+introTitle.Size = UDim2.new(0, 400, 0, 100)
+introTitle.Position = UDim2.new(0.5, -200, 0.5, -50)
+introTitle.BackgroundTransparency = 1
+introTitle.Text = "RobHub"
+introTitle.Font = Enum.Font.GothamBlack
+introTitle.TextSize = 70
+introTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+introTitle.TextTransparency = 1
+introTitle.Parent = introFrame
+
+local introSubtitle = Instance.new("TextLabel")
+introSubtitle.Size = UDim2.new(0, 300, 0, 40)
+introSubtitle.Position = UDim2.new(0.5, -150, 0.5, 60)
+introSubtitle.BackgroundTransparency = 1
+introSubtitle.Text = "Made by ban_thid"
+introSubtitle.Font = Enum.Font.Gotham
+introSubtitle.TextSize = 24
+introSubtitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+introSubtitle.TextTransparency = 1
+introSubtitle.Parent = introFrame
+
+local fadeIn = TweenService:Create(introTitle, TweenInfo.new(1.2, Enum.EasingStyle.Quint), {TextTransparency = 0})
+local fadeInSub = TweenService:Create(introSubtitle, TweenInfo.new(1.2, Enum.EasingStyle.Quint, Enum.EasingDirection.In, 0.5), {TextTransparency = 0})
+local scaleUp = TweenService:Create(introTitle, TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {TextSize = 80})
+local fadeOut = TweenService:Create(introFrame, TweenInfo.new(0.8, Enum.EasingStyle.Quint), {BackgroundTransparency = 1})
+
+fadeIn:Play()
+fadeInSub:Play()
+fadeIn.Completed:Wait()
+scaleUp:Play()
+scaleUp.Completed:Wait()
+task.wait(0.5)
+fadeOut:Play()
+fadeOut.Completed:Wait()
+introFrame:Destroy()
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 700, 0, 360)
+mainFrame.Position = UDim2.new(0.5, -350, 0.5, -180)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Visible = true
+mainFrame.Parent = screenGui
+local mainCorner = Instance.new("UICorner", mainFrame)
+mainCorner.CornerRadius = UDim.new(0, 8)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 44)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+title.Text = "RobHub"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 26
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Parent = mainFrame
+local titleCorner = Instance.new("UICorner", title)
+titleCorner.CornerRadius = UDim.new(0, 8)
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Text = "X"
+closeBtn.Size = UDim2.new(0, 44, 1, 0)
+closeBtn.Position = UDim2.new(1, -44, 0, 0)
+closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 20
+closeBtn.Parent = title
+local closeCorner = Instance.new("UICorner", closeBtn)
+closeCorner.CornerRadius = UDim.new(0, 6)
+
+local openBtn = Instance.new("TextButton")
+openBtn.Size = UDim2.new(0, 50, 0, 50)
+openBtn.Position = UDim2.new(0, 20, 1, -70)
+openBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+openBtn.Text = "Rob"
+openBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+openBtn.Font = Enum.Font.GothamBold
+openBtn.TextSize = 18
+openBtn.Visible = false
+openBtn.Parent = screenGui
+local openCorner = Instance.new("UICorner", openBtn)
+openCorner.CornerRadius = UDim.new(1, 0)
+openBtn.MouseEnter:Connect(function() openBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45) end)
+openBtn.MouseLeave:Connect(function() openBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 30) end)
+
+closeBtn.MouseButton1Click:Connect(function()
+	mainFrame.Visible = false
+	openBtn.Visible = true
+end)
+
+openBtn.MouseButton1Click:Connect(function()
+	mainFrame.Visible = true
+	openBtn.Visible = false
+end)
+
+local tabs = {"Executor", "RobScripts", "Useful", "Changelogs", "Upcoming", "Youtube"}
+local tabStartX = 0.02
+local tabButtons = {}
+
+for i, name in ipairs(tabs) do
+	local tab = Instance.new("TextButton")
+	tab.Size = UDim2.new(0, 105, 0, 30)
+	tab.Position = UDim2.new(tabStartX + (i-1) * 0.155, 0, 0, 50)
+	tab.Text = name
+	tab.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	tab.TextColor3 = Color3.fromRGB(255, 255, 255)
+	tab.Font = Enum.Font.Gotham
+	tab.TextSize = 14
+	tab.Parent = mainFrame
+	local tabCorner = Instance.new("UICorner", tab)
+	tabCorner.CornerRadius = UDim.new(0, 6)
+	tabButtons[i] = tab
+end
+
+local contentFrame = Instance.new("Frame")
+contentFrame.Size = UDim2.new(0.98, 0, 0.74, 0)
+contentFrame.Position = UDim2.new(0.01, 0, 0.25, 0)
+contentFrame.BackgroundTransparency = 1
+contentFrame.Parent = mainFrame
+
+local executorContainer = Instance.new("Frame")
+executorContainer.Size = UDim2.new(1, 0, 1, 0)
+executorContainer.BackgroundTransparency = 1
+executorContainer.Parent = contentFrame
+executorContainer.Visible = true
+
+local leftArea = Instance.new("Frame")
+leftArea.Size = UDim2.new(0.68, -10, 1, 0)
+leftArea.Position = UDim2.new(0, 0, 0, 0)
+leftArea.BackgroundTransparency = 1
+leftArea.Parent = executorContainer
+
+local leftBG = Instance.new("Frame")
+leftBG.Size = UDim2.new(1, 0, 1, 0)
+leftBG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+leftBG.Parent = leftArea
+local leftCorner = Instance.new("UICorner", leftBG)
+leftCorner.CornerRadius = UDim.new(0, 6)
+
+local scriptScroll = Instance.new("ScrollingFrame")
+scriptScroll.Size = UDim2.new(1, -10, 1, -50)
+scriptScroll.Position = UDim2.new(0, 5, 0, 5)
+scriptScroll.BackgroundTransparency = 1
+scriptScroll.ScrollBarThickness = 6
+scriptScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scriptScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scriptScroll.Parent = leftBG
+
+local executorBox = Instance.new("TextBox")
+executorBox.Size = UDim2.new(1, 0, 0, 180)
+executorBox.Position = UDim2.new(0, 0, 0, 0)
+executorBox.MultiLine = true
+executorBox.ClearTextOnFocus = false
+executorBox.Text = "-- paste a script here or click a script to load it"
+executorBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+executorBox.TextXAlignment = Enum.TextXAlignment.Left
+executorBox.TextYAlignment = Enum.TextYAlignment.Top
+executorBox.BackgroundTransparency = 1
+executorBox.Font = Enum.Font.Code
+executorBox.TextSize = 14
+executorBox.Parent = scriptScroll
+
+executorBox:GetPropertyChangedSignal("TextBounds"):Connect(function()
+	local y = executorBox.TextBounds.Y + 16
+	if y < 180 then y = 180 end
+	executorBox.Size = UDim2.new(1, 0, 0, y)
+	scriptScroll.CanvasSize = UDim2.new(0, 0, 0, y + 6)
+end)
+
+local executeBtn = Instance.new("TextButton")
+executeBtn.Text = "Execute"
+executeBtn.Size = UDim2.new(0, 110, 0, 36)
+executeBtn.Position = UDim2.new(0.15, 0, 0.86, 0)
+executeBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+executeBtn.TextColor3 = Color3.fromRGB(250, 250, 250)
+executeBtn.Font = Enum.Font.GothamBold
+executeBtn.TextSize = 16
+executeBtn.Parent = executorContainer
+local execCorner = Instance.new("UICorner", executeBtn)
+execCorner.CornerRadius = UDim.new(0,6)
+
+local clearBtn = Instance.new("TextButton")
+clearBtn.Text = "Clear"
+clearBtn.Size = UDim2.new(0, 110, 0, 36)
+clearBtn.Position = UDim2.new(0.45, 0, 0.86, 0)
+clearBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+clearBtn.TextColor3 = Color3.fromRGB(250,250,250)
+clearBtn.Font = Enum.Font.GothamBold
+clearBtn.TextSize = 16
+clearBtn.Parent = executorContainer
+local clearCorner = Instance.new("UICorner", clearBtn)
+clearCorner.CornerRadius = UDim.new(0,6)
+
+clearBtn.MouseButton1Click:Connect(function()
+	executorBox.Text = ""
+end)
+
+executeBtn.MouseButton1Click:Connect(function()
+	local code = executorBox.Text
+	if code and code ~= "" then
+		local func, err = loadstring(code)
+		if func then
+			local ok, e = pcall(func)
+			if not ok then
+				warn("Runtime error: "..tostring(e))
+			end
+		else
+			warn("Loadstring error: "..tostring(err))
+		end
+	end
+end)
+
+local rightPanel = Instance.new("Frame")
+rightPanel.Size = UDim2.new(0.30, 0, 1, 0)
+rightPanel.Position = UDim2.new(0.69, 0, 0, 0)
+rightPanel.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+rightPanel.Parent = executorContainer
+local rightCorner = Instance.new("UICorner", rightPanel)
+rightCorner.CornerRadius = UDim.new(0,6)
+
+local rightTitle = Instance.new("TextLabel")
+rightTitle.Size = UDim2.new(1, 0, 0, 32)
+rightTitle.Position = UDim2.new(0, 0, 0, 6)
+rightTitle.BackgroundTransparency = 1
+rightTitle.Text = "Script Library"
+rightTitle.Font = Enum.Font.GothamBold
+rightTitle.TextSize = 16
+rightTitle.TextColor3 = Color3.fromRGB(255,255,255)
+rightTitle.Parent = rightPanel
+
+local scriptsScroll = Instance.new("ScrollingFrame")
+scriptsScroll.Size = UDim2.new(1, -10, 1, -48)
+scriptsScroll.Position = UDim2.new(0, 5, 0, 40)
+scriptsScroll.BackgroundTransparency = 1
+scriptsScroll.ScrollBarThickness = 6
+scriptsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scriptsScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scriptsScroll.Parent = rightPanel
+
+local Scripts = {
+		{"Omni God (Sounds Added)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Omni%20God"))()'}, 
+
+	{"Sutart", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Sutart"))()'}, 
+
+	{"Caducus", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/CADUCUS%20(FIXED)"))()'}, 
+
+	{"Big Daddy", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Big%20Daddy"))()'}, 
+
+	{"Star Glitcher", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Spectrum%20Glitcher"))()'}, 
+
+	{"GUN", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/M41451"))()'}, 
+
+	{"SUS", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/secks"))()'}, 
+
+	{"Majora's Mask", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Mas"))()'}, 
+
+	{"Rainbow King", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Rainbow%20Banisher"))()'}, 
+
+	{"DISTORTED", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/The%20Distorted"))()'}, 
+
+	{"Shedletsky", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Shedletsky%20Rage"))()'}, 
+
+	{"Assassin (broken)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/assassin"))()'}, 
+
+	{"The Assasian", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/The%20Assasian"))()'}, 
+
+	{"Chrono Sentinel", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Lock1213/Scripts/refs/heads/main/Chrono%20Sentinel%20(Converted%20With%20Music)"))()'}, 
+
+	{"Incension", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Incension%20Reborn"))()'}, 
+
+	{"SUS 2 (don\'t use this i beg you)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/neko"))()'}, 
+
+	{"SCP-106", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/SCP-106"))()'}, 
+
+	{"ANDRFIX", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/ANDRFIX"))()'}, 
+
+	{"Ender", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Ender"))()'}, 
+
+	{"RUIN EX", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/RUIN%20EX"))()'}, 
+
+	{"RUIN IX", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/RUIN%20IX"))()'}, 
+
+	{"Studio Dummy", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Studio%20Dummy"))()'}, 
+
+	{"The Boys (don\'t use Z)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Boys"))()'}, 
+
+	{"Void Boss (Maxilito...)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/come%20back"))()'}, 
+
+	{"Pandora", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/pandora"))()'}, 
+
+	{"Noob Switcher V5 (Recreated)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Noob%20Switcher%20V5"))()'}, 
+
+	{"Primadon (Monky)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Primadon"))()'}, 
+
+	{"Steve", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Steve"))()'}, 
+
+	{"Devoyance", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Devoyance"))()'}, 
+
+	{"Mystic Annihilation", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Mystic"))()'}, 
+
+	{"Burning Hope", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Burning%20Hope"))()'}, 
+
+	{"Calmed Murderer", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Calmed"))()'}, 
+
+	{"Kenshiro", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Kenshiro"))()'}, 
+
+	{"The Angel", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/The%20Angel"))()'}, 
+
+	{"Carnage", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Carnage"))()'}, 
+
+	{"Chips", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Chips"))()'}, 
+
+	{"Black Dominus Guy", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Dominus"))()'}, 
+
+	{"Very Retro!!!", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/DoomspireBrickbattler"))()'}, 
+
+	{"God Slayer", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/God%20Eater"))()'}, 
+
+	{"Hacker X (My favorite)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Hacker%20X"))()'}, 
+
+	{"Jojo Gauntlets", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Jojo%20Super%20Gauntlets"))()'}, 
+
+	{"Pharoh", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Pharoh"))()'}, 
+
+	{"Sans", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Sans"))()'}, 
+
+	{"Sans V2", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Last%20Breath%20Sans"))()'}, 
+
+	{"Verlex", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Verlex"))()'}, 
+
+	{"The Sun Is A Deadly Laser V2", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Sun"))()'}, 
+
+	{"Patrick :0 (can kick you)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Patrick"))()'}, 
+
+	{"Split Head", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Split"))()'}, 
+
+	{"Determination (Fixed Callback)", 'loadstring(game:HttpGet("https://pastebin.com/raw/SMrFaqxL"))()'}, 
+
+	{"Noob Switcher V5 (ORIGINAL)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/noob%20v5"))()'}, 
+
+	{"All Seeing Hand", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/hand"))()'}, 
+
+	{"Omega Flowey", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Flowey"))()'}, 
+
+	{"GrabGun", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/grab"))()'}, 
+
+	{"Voodoo Child V2", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/voodoo"))()'}, 
+
+	{"Void Guardian", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/void"))()'}, 
+
+	{"Necronomicon Book", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/book"))()'}, 
+
+	{"True Insanity", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Insanity"))()'}, 
+
+	{"Shrike", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Shrike"))()'}, 
+
+	{"KillBot V2 (...)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/KillbotV2"))()'}, 
+
+	{"The Mask", 'loadstring(game:HttpGet("https://pastebin.com/raw/E5eZyJTe"))()'}, 
+
+	{"SCP-096 NPC (but you are the NPC)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/SCP"))()'}, 
+
+	{"Nectula", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Nectula"))()'}, 
+
+	{"Fridge", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Fridge"))()'}, 
+
+	{"Oculus", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Oculus"))()'}, 
+
+	{"Guts", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/GUTS"))()'}, 
+
+	{"Zombie (NPC)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/BRAINZ"))()'}, 
+
+	{"Zombie (PLAYER)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/BRAINS"))()'}, 
+
+	{"Polygoner", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Polygoner"))()'}, 
+
+	{"Xester V2 (kinda broken)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/XESTER%20V2"))()'}, 
+
+	{"Blind Reaper", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/BLINDREAPER"))()'}, 
+
+	{"Black Figure", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Figure"))()'}, 
+
+	{"wth? (Another sus script...)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/WTH"))()'}, 
+
+	{"Comedic Chaos", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Comedy"))()'}, 
+
+	{"Among Us", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/AMOGUS"))()'}, 
+
+	{"GigaChad", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/GigaChad"))()'}, 
+
+	{"Spectrum Glitcher V7", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/sr"))()'}, 
+
+	{"Hallow Slayer", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/HSlayer"))()'}, 
+
+	{"Light Circlet", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/light"))()'}, 
+
+	{"Lunatic", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/lunatic"))()'}, 
+
+	{"Neptunian V", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/NepV"))()'},
+
+
+}
+
+local yOff = 0
+for _, entry in ipairs(Scripts) do
+	local name, code = entry[1], entry[2]
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, -10, 0, 28)
+	btn.Position = UDim2.new(0, 5, 0, yOff)
+	btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+	btn.TextColor3 = Color3.fromRGB(255,255,255)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 14
+	btn.Text = name
+	btn.AutoButtonColor = true
+	btn.Parent = scriptsScroll
+	local bCorner = Instance.new("UICorner", btn)
+	bCorner.CornerRadius = UDim.new(0,4)
+	btn.MouseButton1Click:Connect(function()
+		executorBox.Text = code
+	end)
+	yOff = yOff + 34
+end
+scriptsScroll.CanvasSize = UDim2.new(0, 0, 0, yOff + 6)
+
+local robScriptsContainer = Instance.new("Frame")
+robScriptsContainer.Size = UDim2.new(1, 0, 1, 0)
+robScriptsContainer.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+robScriptsContainer.Parent = contentFrame
+robScriptsContainer.Visible = false
+local robCorner = Instance.new("UICorner", robScriptsContainer)
+robCorner.CornerRadius = UDim.new(0, 6)
+
+local robTitle = Instance.new("TextLabel")
+robTitle.Size = UDim2.new(1, 0, 0, 32)
+robTitle.Position = UDim2.new(0, 0, 0, 6)
+robTitle.BackgroundTransparency = 1
+robTitle.Text = "RobScripts"
+robTitle.Font = Enum.Font.GothamBold
+robTitle.TextSize = 16
+robTitle.TextColor3 = Color3.fromRGB(255,255,255)
+robTitle.Parent = robScriptsContainer
+
+local robScroll = Instance.new("ScrollingFrame")
+robScroll.Size = UDim2.new(1, -10, 1, -48)
+robScroll.Position = UDim2.new(0, 5, 0, 40)
+robScroll.BackgroundTransparency = 1
+robScroll.ScrollBarThickness = 6
+robScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+robScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+robScroll.Parent = robScriptsContainer
+
+local RobScripts = {
+	{"NUKE (unfinished)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/NUKE"))()'},
+	{"Survive Forsaken Killers", 'loadstring(game:HttpGet("https://pastebin.com/raw/CLwqkVKQ"))()'},
+	{"Forsaken John Doe", 'loadstring(game:HttpGet("https://pastebin.com/raw/JwUdxg8y"))()'},
+	{"BLUUDUD", 'loadstring(game:HttpGet("https://pastebin.com/raw/CcHxT0Gj"))()'},
+	{"SCP-096 NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/ZCyVR0Be"))()'},
+	{"Friend!!!", 'loadstring(game:HttpGet("https://pastebin.com/raw/EYvqicVx"))()'},
+	{"FLOWERS", 'loadstring(game:HttpGet("https://pastebin.com/raw/gM2jt3Kp"))()'},
+	{"Hacklord", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Hacklord"))()'},
+	{"Forsaken c00lkidd", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/c00lkidd"))()'},
+	{"Wither Storm (kinda bad)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Wither"))()'},
+	{"No More Games/Savage Fangs (No VFX yet/Must be near a player)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/NMG"))()'},
+	{"World Cutting Slash (VFX)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/SKN"))()'},
+	{"One Inch Punch (Must be near a player)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/INCH"))()'},
+	{"Wally West", 'loadstring(game:HttpGet("https://pastebin.com/raw/UwhUAQmX"))()'},
+    {"Forsaken Removed Emotes", 'loadstring(game:HttpGet("https://pastebin.com/raw/GXHY2haW"))()'},
+    {"Hacklord V2", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/HacklordV2"))()'},
+    {"Admin Noli", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/AdminNoli"))()'},
+    {"???", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Chara"))()'},
+    {"Random Script...", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Strike"))()'},
+    {"Ashle", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/Ashle"))()'},
+    {"Enzukai NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/T9mDQ39s"))()'},
+    {"Senzai NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/5N1sRvSf"))()'},
+    {"Ashina NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/d2chSxVR"))()'},
+    {"Hiachi NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/b2JXu8KW"))()'},
+    {"Kyogi NPC", 'loadstring(game:HttpGet("https://pastebin.com/raw/YLb8Wkjq"))()'},
+    {"Sukuna", 'loadstring(game:HttpGet("https://pastebin.com/raw/iW2Gg6Hh"))()'},
+    {"Final Spark", 'loadstring(game:HttpGet("https://pastebin.com/raw/bAHHJVL5"))()'},
+    {"Gojo", 'loadstring(game:HttpGet("https://pastebin.com/raw/GutMLF0i"))()'},
+    {"KJ (Stoic Bombless unfortunately)", 'loadstring(game:HttpGet("https://pastebin.com/raw/nwEy7ZVw"))()'},
+}
+
+local ryOff = 0
+for _, entry in ipairs(RobScripts) do
+	local name, code = entry[1], entry[2]
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, -10, 0, 28)
+	btn.Position = UDim2.new(0, 5, 0, ryOff)
+	btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+	btn.TextColor3 = Color3.fromRGB(255,255,255)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 14
+	btn.Text = name
+	btn.AutoButtonColor = true
+	btn.Parent = robScroll
+	local bCorner = Instance.new("UICorner", btn)
+	bCorner.CornerRadius = UDim.new(0,4)
+	btn.MouseButton1Click:Connect(function()
+		local func, err = loadstring(code)
+		if func then
+			local ok, e = pcall(func)
+			if not ok then
+				warn("RobScript error: "..tostring(e))
+			end
+		else
+			warn("RobScript loadstring error: "..tostring(err))
+		end
+	end)
+	ryOff = ryOff + 34
+end
+
+local specialBtn = Instance.new("TextButton")
+specialBtn.Size = UDim2.new(1, -10, 0, 28)  -- Same size as normal buttons
+specialBtn.Position = UDim2.new(0, 5, 0, ryOff)
+specialBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)  -- Normal button color
+specialBtn.Text = "???"
+specialBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+specialBtn.Font = Enum.Font.Gotham
+specialBtn.TextSize = 14
+specialBtn.AutoButtonColor = true
+specialBtn.Parent = robScroll
+
+local specialImg = Instance.new("ImageLabel")
+specialImg.Size = UDim2.new(1, 0, 1, 0)
+specialImg.BackgroundTransparency = 1
+specialImg.Image = "rbxassetid://4870863015"
+specialImg.ImageTransparency = 0.4
+specialImg.Parent = specialBtn
+
+local specialCorner = Instance.new("UICorner", specialBtn)
+specialCorner.CornerRadius = UDim.new(0,4)
+
+specialBtn.MouseEnter:Connect(function()
+	specialBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
+	specialImg.ImageTransparency = 0.55
+end)
+
+specialBtn.MouseLeave:Connect(function()
+	specialBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+	specialImg.ImageTransparency = 0.4
+end)
+
+specialBtn.MouseButton1Click:Connect(function()
+	loadstring(game:HttpGet("https://pastebin.com/raw/gHKDP56P"))()
+end)
+
+task.spawn(function()
+	while true do
+		task.wait(math.random(2, 5))
+		local phrases = {"Bless me", "Let me help you", "Press me", "GOD", "Shake my hand"}
+		local randomPhrase = phrases[math.random(1, #phrases)]
+		
+		specialBtn.Text = randomPhrase
+		specialBtn.TextColor3 = Color3.fromRGB(0, 255, 120)
+		task.wait(0.6)
+		
+		specialBtn.Text = "???"
+		specialBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	end
+end)
+
+ryOff = ryOff + 34
+robScroll.CanvasSize = UDim2.new(0, 0, 0, ryOff + 6)
+
+local usefulContainer = Instance.new("Frame")
+usefulContainer.Size = UDim2.new(1, 0, 1, 0)
+usefulContainer.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+usefulContainer.Parent = contentFrame
+usefulContainer.Visible = false
+local usefulCorner = Instance.new("UICorner", usefulContainer)
+usefulCorner.CornerRadius = UDim.new(0, 6)
+
+local usefulTitle = Instance.new("TextLabel")
+usefulTitle.Size = UDim2.new(1, 0, 0, 32)
+usefulTitle.Position = UDim2.new(0, 0, 0, 6)
+usefulTitle.BackgroundTransparency = 1
+usefulTitle.Text = "Useful Scripts"
+usefulTitle.Font = Enum.Font.GothamBold
+usefulTitle.TextSize = 16
+usefulTitle.TextColor3 = Color3.fromRGB(255,255,255)
+usefulTitle.Parent = usefulContainer
+
+local usefulScroll = Instance.new("ScrollingFrame")
+usefulScroll.Size = UDim2.new(1, -10, 1, -48)
+usefulScroll.Position = UDim2.new(0, 5, 0, 40)
+usefulScroll.BackgroundTransparency = 1
+usefulScroll.ScrollBarThickness = 6
+usefulScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+usefulScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+usefulScroll.Parent = usefulContainer
+
+local UsefulScripts = {
+  	{"Keyless Mobile Dex", 'loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Keyless-mobile-dex-17888"))()'},
+  	{"Remote Spy", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/SimpleSpy/refs/heads/main/Mobile.lua"))()'},
+	  {"Fire Remotes", 'loadstring(game:HttpGet("https://gist.githubusercontent.com/ServerSad/5203ac8b238aa0ce4ba3811c3ef17cd4/raw/6077d09ab35776943592004f8b6a4ff7341e550f/Remote%2520gui%2520(usefull)"))()'},
+  	{"Infinite Yield", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()'},
+  	{"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()'},
+	  {"Keyboard", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Xxtan31/Ata/main/deltakeyboardcrack.txt"))()'},
+	  {"R15 to R6 (visual)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ian49972/SCRIPTS/refs/heads/main/R6"))()'},
+}
+
+local uyOff = 0
+for _, entry in ipairs(UsefulScripts) do
+	local name, code = entry[1], entry[2]
+	local btn = Instance.new("TextButton")
+	btn.Size = UDim2.new(1, -10, 0, 28)
+	btn.Position = UDim2.new(0, 5, 0, uyOff)
+	btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+	btn.TextColor3 = Color3.fromRGB(255,255,255)
+	btn.Font = Enum.Font.Gotham
+	btn.TextSize = 14
+	btn.Text = name
+	btn.AutoButtonColor = true
+	btn.Parent = usefulScroll
+	local bCorner = Instance.new("UICorner", btn)
+	bCorner.CornerRadius = UDim.new(0,4)
+	btn.MouseButton1Click:Connect(function()
+		local func, err = loadstring(code)
+		if func then
+			local ok, e = pcall(func)
+			if not ok then
+				warn("UsefulScript error: "..tostring(e))
+			end
+		else
+			warn("UsefulScript loadstring error: "..tostring(err))
+		end
+	end)
+	uyOff = uyOff + 34
+end
+usefulScroll.CanvasSize = UDim2.new(0, 0, 0, uyOff + 6)
+
+local changelogsContainer = Instance.new("Frame")
+changelogsContainer.Size = UDim2.new(1, 0, 1, 0)
+changelogsContainer.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+changelogsContainer.Parent = contentFrame
+changelogsContainer.Visible = false
+local clCorner = Instance.new("UICorner", changelogsContainer)
+clCorner.CornerRadius = UDim.new(0, 6)
+
+local clTitle = Instance.new("TextLabel")
+clTitle.Size = UDim2.new(1, 0, 0, 32)
+clTitle.Position = UDim2.new(0, 0, 0, 6)
+clTitle.BackgroundTransparency = 1
+clTitle.Text = "Changelogs"
+clTitle.Font = Enum.Font.GothamBold
+clTitle.TextSize = 16
+clTitle.TextColor3 = Color3.fromRGB(255,255,255)
+clTitle.Parent = changelogsContainer
+
+local clScroll = Instance.new("ScrollingFrame")
+clScroll.Size = UDim2.new(1, -20, 1, -48)
+clScroll.Position = UDim2.new(0, 10, 0, 40)
+clScroll.BackgroundTransparency = 1
+clScroll.ScrollBarThickness = 6
+clScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+clScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+clScroll.Parent = changelogsContainer
+
+local clText = Instance.new("TextLabel")
+clText.Size = UDim2.new(1, 0, 0, 0)
+clText.Position = UDim2.new(0, 0, 0, 0)
+clText.BackgroundTransparency = 1
+clText.Text = [[
+- Added Forsaken Removed Emotes in RobScripts
+- Added Hacklord V2 in RobScripts
+- Added Admin Noli in RobScripts (i need iron blocks)
+- Added 5 scripts in the script library
+- ???
+- Orbital Strike?
+- Ashle Script
+- Added The Mimic Monsters
+- This script is so dead lol
+- Added Sukuna [Visual and i couldn't make it damage :(]
+- Added Final Spark (A gift for you)
+- Added Gojo 
+- Added KJ
+]]
+clText.TextColor3 = Color3.fromRGB(200, 200, 200)
+clText.TextXAlignment = Enum.TextXAlignment.Left
+clText.TextYAlignment = Enum.TextYAlignment.Top
+clText.Font = Enum.Font.Code
+clText.TextSize = 14
+clText.AutomaticSize = Enum.AutomaticSize.Y
+clText.Parent = clScroll
+
+local upcomingContainer = Instance.new("Frame")
+upcomingContainer.Size = UDim2.new(1, 0, 1, 0)
+upcomingContainer.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+upcomingContainer.Parent = contentFrame
+upcomingContainer.Visible = false
+local upcomingCorner = Instance.new("UICorner", upcomingContainer)
+upcomingCorner.CornerRadius = UDim.new(0, 6)
+
+local upcomingTitle = Instance.new("TextLabel")
+upcomingTitle.Size = UDim2.new(1, 0, 0, 32)
+upcomingTitle.Position = UDim2.new(0, 0, 0, 6)
+upcomingTitle.BackgroundTransparency = 1
+upcomingTitle.Text = "Upcoming Script"
+upcomingTitle.Font = Enum.Font.GothamBold
+upcomingTitle.TextSize = 16
+upcomingTitle.TextColor3 = Color3.fromRGB(255,255,255)
+upcomingTitle.Parent = upcomingContainer
+
+local mainScroll = Instance.new("ScrollingFrame")
+mainScroll.Size = UDim2.new(1, -20, 1, -50)
+mainScroll.Position = UDim2.new(0, 10, 0, 45)
+mainScroll.BackgroundTransparency = 1
+mainScroll.ScrollBarThickness = 8
+mainScroll.ScrollBarImageColor3 = Color3.fromRGB(70, 70, 70)
+mainScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+mainScroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+mainScroll.Parent = upcomingContainer
+
+local content = Instance.new("Frame")
+content.Size = UDim2.new(1, 0, 0, 400)
+content.BackgroundTransparency = 1
+content.Parent = mainScroll
+
+local upcomingImage = Instance.new("ImageLabel")
+upcomingImage.Size = UDim2.new(0, 300, 0, 170)
+upcomingImage.Position = UDim2.new(0.5, -150, 0, 10)
+upcomingImage.BackgroundTransparency = 1
+upcomingImage.Image = getcustomasset("UpcomingScript4.png")
+upcomingImage.Parent = content
+local imgCorner = Instance.new("UICorner", upcomingImage)
+imgCorner.CornerRadius = UDim.new(0, 10)
+
+local upcomingText = Instance.new("TextLabel")
+upcomingText.Size = UDim2.new(1, -20, 0, 0)
+upcomingText.Position = UDim2.new(0, 10, 0, 195)
+upcomingText.BackgroundTransparency = 1
+upcomingText.Text = [[
+Jun
+
+• No more games
+]]
+upcomingText.TextColor3 = Color3.fromRGB(200, 200, 200)
+upcomingText.TextXAlignment = Enum.TextXAlignment.Left
+upcomingText.TextYAlignment = Enum.TextYAlignment.Top
+upcomingText.Font = Enum.Font.Code
+upcomingText.TextSize = 15
+upcomingText.TextWrapped = true
+upcomingText.RichText = true
+upcomingText.AutomaticSize = Enum.AutomaticSize.Y
+upcomingText.Parent = content
+
+content:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+    local textY = upcomingText.AbsolutePosition.Y - content.AbsolutePosition.Y + upcomingText.AbsoluteSize.Y
+    content.Size = UDim2.new(1, 0, 0, textY + 30)
+end)
+
+local youtubeContainer = Instance.new("Frame")
+youtubeContainer.Size = UDim2.new(1, 0, 1, 0)
+youtubeContainer.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+youtubeContainer.Parent = contentFrame
+youtubeContainer.Visible = false
+local ytCorner = Instance.new("UICorner", youtubeContainer)
+ytCorner.CornerRadius = UDim.new(0, 6)
+
+local ytTitle = Instance.new("TextLabel")
+ytTitle.Size = UDim2.new(1, 0, 0, 32)
+ytTitle.Position = UDim2.new(0, 0, 0, 6)
+ytTitle.BackgroundTransparency = 1
+ytTitle.Text = "YouTube Channel"
+ytTitle.Font = Enum.Font.GothamBold
+ytTitle.TextSize = 16
+ytTitle.TextColor3 = Color3.fromRGB(255,255,255)
+ytTitle.Parent = youtubeContainer
+
+local copyBtn = Instance.new("TextButton")
+copyBtn.Size = UDim2.new(0, 320, 0, 80)
+copyBtn.Position = UDim2.new(0.5, -160, 0.5, -40)
+copyBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+copyBtn.Text = "Copy YouTube Link"
+copyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+copyBtn.Font = Enum.Font.GothamBold
+copyBtn.TextSize = 18
+copyBtn.Parent = youtubeContainer
+local copyCorner = Instance.new("UICorner", copyBtn)
+copyCorner.CornerRadius = UDim.new(0, 10)
+
+copyBtn.MouseButton1Click:Connect(function()
+	setclipboard("https://m.youtube.com/channel/UChlSdd0g0ul6FGBTjkGyWhw")
+	copyBtn.Text = " Copied!"
+	task.wait(2)
+	copyBtn.Text = "Copy YouTube Channel Link"
+end)
+
+local function showTab(index)
+	executorContainer.Visible = (index == 1)
+	robScriptsContainer.Visible = (index == 2)
+	usefulContainer.Visible = (index == 3)
+	changelogsContainer.Visible = (index == 4)
+	upcomingContainer.Visible = (index == 5)
+	youtubeContainer.Visible = (index == 6)
+	
+	for i, btn in ipairs(tabButtons) do
+		btn.BackgroundColor3 = (i == index) and Color3.fromRGB(60, 60, 60) or Color3.fromRGB(45, 45, 45)
+	end
+end
+
+for i, btn in ipairs(tabButtons) do
+	btn.MouseButton1Click:Connect(function()
+		showTab(i)
+	end)
+end
+
+showTab(1)
+
+local dragging, dragInput, dragStart, startPos
+local function update(input)
+	local delta = input.Position - dragStart
+	mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+mainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 and mainFrame.Visible then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+mainFrame.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		update(input)
+	end
+end)
