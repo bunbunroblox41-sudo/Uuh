@@ -1,0 +1,146 @@
+-- Services
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+-- Variables
+local shiftLockEnabled = false
+local setupActive = true
+local confirmationStage = false
+local lastPos = UDim2.new(0.8, 0, 0.5, 0)
+local dragDistance = 0
+
+-- UI Container
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ShiftLockLiteSetup"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- 1. SETUP SQUARE (Квадратик для настройки)
+local setupFrame = Instance.new("TextButton")
+setupFrame.Size = UDim2.new(0, 60, 0, 60)
+setupFrame.Position = lastPos
+setupFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+setupFrame.BackgroundTransparency = 0.5
+setupFrame.Text = "MOVE ME"
+setupFrame.Font = Enum.Font.GothamBold
+setupFrame.TextSize = 12
+setupFrame.TextColor3 = Color3.fromRGB(0, 0, 0)
+setupFrame.AutoButtonColor = false
+setupFrame.Parent = screenGui
+
+local setupCorner = Instance.new("UICorner")
+setupCorner.CornerRadius = UDim.new(0, 10)
+setupCorner.Parent = setupFrame
+
+-- Dragging logic for Setup
+local dragging, dragStart, startPos
+setupFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = setupFrame.Position
+		dragDistance = 0
+	end
+end)
+
+setupFrame.InputChanged:Connect(function(input)
+	if (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) and dragging then
+		local delta = input.Position - dragStart
+		dragDistance = delta.Magnitude
+		setupFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+-- 2. SHIFT LOCK LOGIC (Core)
+local function toggleShiftLock()
+	if not player.Character or not player.Character:FindFirstChild("Humanoid") then return end
+	local humanoid = player.Character.Humanoid
+	
+	shiftLockEnabled = not shiftLockEnabled
+	
+	if shiftLockEnabled then
+		humanoid.CameraOffset = Vector3.new(1.7, 0.5, 0)
+		humanoid.AutoRotate = false
+	else
+		humanoid.CameraOffset = Vector3.new(0, 0, 0)
+		humanoid.AutoRotate = true
+	end
+end
+
+RunService.RenderStepped:Connect(function()
+	if shiftLockEnabled and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+		local _, y = camera.CFrame:ToEulerAnglesYXZ()
+		player.Character.HumanoidRootPart.CFrame = CFrame.new(player.Character.HumanoidRootPart.Position) * CFrame.Angles(0, y, 0)
+	end
+end)
+
+-- 3. FINAL BUTTON (Создание финальной кнопки)
+local function createFinalButton(pos)
+	setupFrame:Destroy()
+	
+	local lockButton = Instance.new("TextButton")
+	lockButton.Size = UDim2.new(0, 60, 0, 60)
+	lockButton.Position = pos
+	lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	lockButton.BackgroundTransparency = 0.4
+	lockButton.Text = "🔓"
+	lockButton.TextSize = 30
+	lockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	lockButton.Font = Enum.Font.GothamBold
+	lockButton.AutoButtonColor = true -- Включаем для визуального отклика
+	lockButton.Parent = screenGui
+	
+	local btnCorner = Instance.new("UICorner")
+	btnCorner.CornerRadius = UDim.new(1, 0)
+	btnCorner.Parent = lockButton
+	
+	-- Мгновенная активация без задержек
+	lockButton.MouseButton1Click:Connect(function()
+		toggleShiftLock()
+		lockButton.Text = shiftLockEnabled and "🔒" or "🔓"
+	end)
+end
+
+-- 4. CONFIRMATION LOGIC
+setupFrame.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+		
+		-- Если кнопка почти не двигалась (считаем за клик)
+		if dragDistance < 10 then
+			if not confirmationStage then
+				-- Первая стадия подтверждения
+				confirmationStage = true
+				setupFrame.Text = "Đc Chx"
+				setupFrame.BackgroundColor3 = Color3.fromRGB(0, 255, 100)
+				
+				-- Таймер сброса на 5 секунд
+				task.delay(5, function()
+					if setupActive and confirmationStage then
+						confirmationStage = false
+						setupFrame.Text = "Di Chuyển"
+						setupFrame.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+					end
+				end)
+			else
+				-- Вторая стадия: Финальное создание
+				setupActive = false
+				createFinalButton(setupFrame.Position)
+			end
+		end
+	end
+end)
+
+-- Character respawn support
+player.CharacterAdded:Connect(function()
+	task.wait(0.5)
+	if shiftLockEnabled then
+		-- Сброс состояния при смерти, чтобы не баговало камеру
+		shiftLockEnabled = false
+		toggleShiftLock()
+	end
+end)
